@@ -1,0 +1,118 @@
+import { useMemo, useState } from "react";
+
+import { useGetEvent } from "../queries/events.queries";
+import { Progress } from "../components/progressBar";
+import { Button } from "../components/button";
+import { useReserveGuestSpot } from "../queries/guest.mutation";
+import { showToast } from "../utils/showToast.utils";
+
+type Props = {
+  eventId: string;
+  token?: string;
+  onConfirmed: () => void;
+};
+
+export default function GuestReserve({ eventId, token, onConfirmed }: Props) {
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const { data: event, isLoading, isError, error } = useGetEvent(eventId);
+
+  const reserveMutation = useReserveGuestSpot({ eventId });
+
+  const remaining = useMemo(() => {
+    if (!event) return 0;
+    return Math.max(0, event.capacityTotal - event.capacityReserved);
+  }, [event]);
+
+  const isFull = remaining <= 0;
+
+  const handleReserve = async () => {
+    if (!event) return;
+    setErrorMsg(null);
+
+    try {
+      await reserveMutation.mutateAsync();
+      onConfirmed();
+    } catch (e: unknown) {
+      setErrorMsg((e as Error).message || "Failed to reserve parking spot");
+      showToast({
+        type: "error",
+        message: (e as Error).message || "Failed to reserve parking spot",
+      });
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 px-5 pb-10 pt-8">
+        <div className="rounded-lg border border-gray-200 bg-white p-4 text-gray-600">
+          Loading event…
+        </div>
+      </div>
+    );
+  }
+
+  if (isError || !event) {
+    return (
+      <div className="min-h-screen bg-gray-50 px-5 pb-10 pt-8">
+        <div className="rounded-lg border border-red-200 bg-white p-4 text-red-700">
+          Failed to load event:{" "}
+          {error instanceof Error ? error.message : "Unknown error"}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 px-5 pb-10 pt-8">
+      <header>
+        <h1 className="text-5xl font-semibold tracking-tight text-gray-900">
+          {event.title}
+        </h1>
+
+        <div className="mt-4 flex items-center gap-3">
+          <span className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-sm font-medium text-gray-900">
+            {remaining} spots remaining
+          </span>
+
+          <div className="flex-1">
+            <Progress value={event.capacityReserved} max={event.capacityTotal} />
+          </div>
+        </div>
+      </header>
+
+      <section className="mt-10 space-y-6">
+        <div className="text-sm leading-6 text-gray-600">
+          <div>
+            {event.start} - {event.end}
+          </div>
+          <div>{event.address}</div>
+        </div>
+
+        <p className="whitespace-pre-line text-base leading-7 text-gray-900">
+          {event.description}
+        </p>
+      </section>
+
+      <section className="mt-10 space-y-3">
+        {errorMsg && (
+          <div className="rounded-lg border border-red-200 bg-white p-3 text-sm text-red-700">
+            {errorMsg}
+          </div>
+        )}
+
+        <Button onClick={handleReserve} disabled={isFull || reserveMutation.isPending}>
+          {reserveMutation.isPending
+            ? "Reserving…"
+            : isFull
+              ? "No spots remaining"
+              : "Reserve parking for this event"}
+        </Button>
+
+        <p className="text-center text-sm text-gray-500">
+          You will not be asked for personal details.
+        </p>
+      </section>
+    </div>
+  );
+}
