@@ -1,6 +1,11 @@
 import type { Event } from "../types/event.type";
-import { Card } from "../components/card";
 import { useGetEvents } from "../queries/events.queries";
+import { Loader } from "../components/loader";
+import { Card } from "../components/card";
+
+
+
+
 
 type Props = {
   onOpenEvent: (eventId: string) => void;
@@ -14,7 +19,11 @@ function getStatusColor(e: Event) {
 }
 
 export default function EventList({ onOpenEvent }: Props) {
-  const { data, isLoading, isError, error } = useGetEvents();
+  const { data: events, isLoading, isError, error } = useGetEvents();
+
+  if (isLoading) {
+    return <Loader text="Loading events…" />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 px-5 pb-10 pt-8">
@@ -40,9 +49,9 @@ export default function EventList({ onOpenEvent }: Props) {
         </div>
       )}
 
-      {data && (
+      {events && events.length > 0 && (
         <div className="space-y-5">
-          {data.map((e: Event) => {
+          {events.map((e: Event) => {
             const topBar = getStatusColor(e);
             return (
               <button

@@ -12,6 +12,12 @@ type Props = {
   onConfirmed: () => void;
 };
 
+function formatTitle(title: string) {
+  const words = title.split(" ");
+  if (words.length <= 1) return { first: title, rest: "" };
+  return { first: words[0], rest: words.slice(1).join(" ") };
+}
+
 export default function GuestReserve({ eventId, token, onConfirmed }: Props) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -44,7 +50,7 @@ export default function GuestReserve({ eventId, token, onConfirmed }: Props) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 px-5 pb-10 pt-8">
+      <div className="min-h-screen bg-white px-5 pb-10 pt-8">
         <div className="rounded-lg border border-gray-200 bg-white p-4 text-gray-600">
           Loading event…
         </div>
@@ -54,7 +60,7 @@ export default function GuestReserve({ eventId, token, onConfirmed }: Props) {
 
   if (isError || !event) {
     return (
-      <div className="min-h-screen bg-gray-50 px-5 pb-10 pt-8">
+      <div className="min-h-screen bg-white px-5 pb-10 pt-8">
         <div className="rounded-lg border border-red-200 bg-white p-4 text-red-700">
           Failed to load event:{" "}
           {error instanceof Error ? error.message : "Unknown error"}
@@ -63,15 +69,24 @@ export default function GuestReserve({ eventId, token, onConfirmed }: Props) {
     );
   }
 
+  const { first, rest } = formatTitle(event.title);
+  const dateTime = `${event.start} - ${event.end}`;
+
   return (
-    <div className="min-h-screen bg-gray-50 px-5 pb-10 pt-8">
+    <div className="min-h-screen bg-white px-5 pb-10 pt-8">
       <header>
-        <h1 className="text-5xl font-semibold tracking-tight text-gray-900">
-          {event.title}
+        <h1 className="text-4xl font-semibold tracking-tight text-gray-900">
+          {first}
+          {rest && (
+            <>
+              <br />
+              <span className="ml-4">{rest}</span>
+            </>
+          )}
         </h1>
 
         <div className="mt-4 flex items-center gap-3">
-          <span className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 text-sm font-medium text-gray-900">
+          <span className="rounded-md border border-gray-300 bg-gray-100 px-2.5 py-1 text-sm font-medium text-gray-700">
             {remaining} spots remaining
           </span>
 
@@ -83,13 +98,11 @@ export default function GuestReserve({ eventId, token, onConfirmed }: Props) {
 
       <section className="mt-10 space-y-6">
         <div className="text-sm leading-6 text-gray-600">
-          <div>
-            {event.start} - {event.end}
-          </div>
-          <div>{event.address}</div>
+          <div>{dateTime}</div>
+          <div className="mt-1">{event.address}</div>
         </div>
 
-        <p className="whitespace-pre-line text-base leading-7 text-gray-900">
+        <p className="whitespace-pre-line text-base leading-7 text-gray-700">
           {event.description}
         </p>
       </section>
