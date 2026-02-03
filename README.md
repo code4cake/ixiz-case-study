@@ -9,8 +9,10 @@ This is a case study project that demonstrates a parking reservation system with
 - **Admin Flow**: Event organizers can view a list of events, see reservation status, and share guest links
 - **Guest Flow**: Attendees can reserve parking spots through shared links without providing personal details
 
-## 🔗 Figma Design
-[Link to Figma Design File](https://www.figma.com/design/pZmvu0t4uIsZyRKRGUqaHC/Izix-test-technique?node-id=0-1&t=H3CJIRf9EMr2qqnc-1)
+## 🔗 Figma Design [Link to Figma Design File](https://www.figma.com/design/pZmvu0t4uIsZyRKRGUqaHC/Izix-test-technique?node-id=0-1&t=H3CJIRf9EMr2qqnc-1)
+
+## 🎯 See it Live here [ParkSpotBE](https://parkspotbe.netlify.app/)
+
 
 ## 📋 Prerequisites
 
@@ -50,3 +52,11 @@ This is a case study project that demonstrates a parking reservation system with
 - `pnpm run lint`
 - `pnpm run format`
 - `pnpm run test`
+
+
+## Things I will have done with more time
+
+- add more Unit testing
+- refactor
+
+## Time Spent: 5 hours 

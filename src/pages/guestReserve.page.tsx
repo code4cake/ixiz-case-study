@@ -52,9 +52,11 @@ export default function GuestReserve({ eventId, onConfirmed }: GuestReserveProps
 
   if (isError || !event) {
     return (
-      <div className="min-h-screen bg-white px-5 pb-10 pt-8">
-        <div className="rounded-lg border border-red-200 bg-white p-4 text-red-700">
-          Failed to load event: {error instanceof Error ? error.message : 'Unknown error'}
+      <div className="min-h-screen bg-white px-5 pb-10 pt-8 md:px-8">
+        <div className="mx-auto max-w-2xl">
+          <div className="rounded-lg border border-red-200 bg-white p-4 text-red-700">
+            Failed to load event: {error instanceof Error ? error.message : 'Unknown error'}
+          </div>
         </div>
       </div>
     );
@@ -64,41 +66,43 @@ export default function GuestReserve({ eventId, onConfirmed }: GuestReserveProps
   const dateTime = `${event.start} - ${event.end}`;
 
   return (
-    <div className="min-h-screen bg-white px-5 pb-10 pt-8">
-      <header>
-        <h1 className="text-4xl font-semibold tracking-tight text-gray-900">{first + ' ' + rest}</h1>
+    <div className="min-h-screen bg-white px-5 pb-10 pt-8 md:px-8">
+      <div className="mx-auto max-w-2xl">
+        <header>
+          <h1 className="text-4xl font-semibold tracking-tight text-gray-900">{first + ' ' + rest}</h1>
 
-        <div className="mt-4 flex items-center gap-3">
-          <span className="rounded-md border border-gray-300 bg-gray-100 px-2.5 py-1 text-base font-medium text-gray-700">
-            {remaining} spots remaining
-          </span>
+          <div className="mt-4 flex items-center gap-3">
+            <span className="rounded-md border border-gray-300 bg-gray-100 px-2.5 py-1 text-base font-medium text-gray-700">
+              {remaining} spots remaining
+            </span>
 
-          <div className="flex-1">
-            <ProgressBar value={event.capacityReserved} max={event.capacityTotal} />
+            <div className="flex-1">
+              <ProgressBar value={event.capacityReserved} max={event.capacityTotal} />
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <section className="mt-10 space-y-6">
-        <div className="text-base leading-6 text-gray-600">
-          <div>{dateTime}</div>
-          <div className="mt-1">{event.address}</div>
-        </div>
+        <section className="mt-10 space-y-6">
+          <div className="text-base leading-6 text-gray-600">
+            <div>{dateTime}</div>
+            <div className="mt-1">{event.address}</div>
+          </div>
 
-        <p className="whitespace-pre-line text-base leading-6 text-text-primary">{event.description}</p>
-      </section>
+          <p className="whitespace-pre-line text-base leading-6 text-text-primary">{event.description}</p>
+        </section>
 
-      <section className="mt-10 space-y-3">
-        {errorMsg && (
-          <div className="rounded-lg border border-red-200 bg-white p-3 text-sm text-red-700">{errorMsg}</div>
-        )}
+        <section className="mt-10 space-y-3">
+          {errorMsg && (
+            <div className="rounded-lg border border-red-200 bg-white p-3 text-sm text-red-700">{errorMsg}</div>
+          )}
 
-        <Button onClick={handleReserve} disabled={isFull || reserveMutation.isPending}>
-          {reserveMutation.isPending ? 'Reserving…' : isFull ? 'No spots remaining' : 'Reserve parking for this event'}
-        </Button>
+          <Button onClick={handleReserve} disabled={isFull || reserveMutation.isPending}>
+            {reserveMutation.isPending ? 'Reserving…' : isFull ? 'No spots remaining' : 'Reserve parking for this event'}
+          </Button>
 
-        <p className="text-center text-base text-gray-500">You will not be asked for personal details.</p>
-      </section>
+          <p className="text-center text-base text-gray-500">You will not be asked for personal details.</p>
+        </section>
+      </div>
     </div>
   );
 }
