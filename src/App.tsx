@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
+import {  useMemo, useState } from "react";
+
 import EventList from "./pages/eventList.page";
 import EventDetail from "./pages/eventDetail.page";
 import GuestReserve from "./pages/guestReserve.page";
 import GuestConfirmed from "./pages/guestConfirmed.page";
+
+import { showToast } from "./utils/showToast.utils";
+
+import { useGuestLinkParams } from "./hooks/useGuestLinkParams.hooks";
 
 type View =
   | { name: "events" }
@@ -11,20 +16,16 @@ type View =
   | { name: "guestConfirmed" };
 
 export default function App() {
-  const [view, setView] = useState<View>({ name: "events" });
-
-  // Parse guest link on first load: /?mode=guest&eventId=evt_1&token=token_evt_1
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const mode = params.get("mode");
-    const eventId = params.get("eventId");
-    const token = params.get("token") ?? undefined;
-
-    if (mode === "guest" && eventId) {
-      setView({ name: "guestReserve", eventId, token });
+  const { isGuestMode, eventId, token } = useGuestLinkParams();
+  
+  const initialView = useMemo<View>(() => {
+    if (isGuestMode && eventId) {
+      return { name: "guestReserve", eventId, token };
     }
-  }, []);
+    return { name: "events" };
+  }, [isGuestMode, eventId, token]);
 
+  const [view, setView] = useState<View>(initialView);
   if (view.name === "events") {
     return (
       <EventList
@@ -43,7 +44,10 @@ export default function App() {
             eventId
           )}&token=${encodeURIComponent(token)}`;
           navigator.clipboard?.writeText(url);
-          alert("Guest link copied!");
+          showToast({
+            type: "success",
+            message: `Guest link copied!`,
+            });
         }}
       />
     );

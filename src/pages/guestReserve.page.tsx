@@ -1,24 +1,24 @@
 import { useMemo, useState } from "react";
 
 import { useGetEvent } from "../queries/events.queries";
-import { Progress } from "../components/progressBar";
-import { Button } from "../components/button";
 import { useReserveGuestSpot } from "../queries/guest.mutation";
-import { showToast } from "../utils/showToast.utils";
 
-type Props = {
+import { ProgressBar } from "../components/progressBar.tsx";
+import { Button } from "../components/button";
+import { Loader } from "../components/loader.tsx";
+
+import { showToast } from "../utils/showToast.utils";
+import { formatTitle } from "../utils/formatTitle.utils";
+
+type GuestReserveProps = {
   eventId: string;
   token?: string;
   onConfirmed: () => void;
 };
 
-function formatTitle(title: string) {
-  const words = title.split(" ");
-  if (words.length <= 1) return { first: title, rest: "" };
-  return { first: words[0], rest: words.slice(1).join(" ") };
-}
 
-export default function GuestReserve({ eventId, token, onConfirmed }: Props) {
+
+export default function GuestReserve({ eventId, token, onConfirmed }: GuestReserveProps) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const { data: event, isLoading, isError, error } = useGetEvent(eventId);
@@ -50,11 +50,7 @@ export default function GuestReserve({ eventId, token, onConfirmed }: Props) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white px-5 pb-10 pt-8">
-        <div className="rounded-lg border border-gray-200 bg-white p-4 text-gray-600">
-          Loading event…
-        </div>
-      </div>
+  <Loader text="Loading event…" />
     );
   }
 
@@ -76,33 +72,27 @@ export default function GuestReserve({ eventId, token, onConfirmed }: Props) {
     <div className="min-h-screen bg-white px-5 pb-10 pt-8">
       <header>
         <h1 className="text-4xl font-semibold tracking-tight text-gray-900">
-          {first}
-          {rest && (
-            <>
-              <br />
-              <span className="ml-4">{rest}</span>
-            </>
-          )}
+          {first + " " + rest}
         </h1>
 
         <div className="mt-4 flex items-center gap-3">
-          <span className="rounded-md border border-gray-300 bg-gray-100 px-2.5 py-1 text-sm font-medium text-gray-700">
+          <span className="rounded-md border border-gray-300 bg-gray-100 px-2.5 py-1 text-base font-medium text-gray-700">
             {remaining} spots remaining
           </span>
 
           <div className="flex-1">
-            <Progress value={event.capacityReserved} max={event.capacityTotal} />
+            <ProgressBar value={event.capacityReserved} max={event.capacityTotal} />
           </div>
         </div>
       </header>
 
       <section className="mt-10 space-y-6">
-        <div className="text-sm leading-6 text-gray-600">
+        <div className="text-base leading-6 text-gray-600">
           <div>{dateTime}</div>
           <div className="mt-1">{event.address}</div>
         </div>
 
-        <p className="whitespace-pre-line text-base leading-7 text-gray-700">
+        <p className="whitespace-pre-line text-base leading-6 text-text-primary">
           {event.description}
         </p>
       </section>
@@ -122,7 +112,7 @@ export default function GuestReserve({ eventId, token, onConfirmed }: Props) {
               : "Reserve parking for this event"}
         </Button>
 
-        <p className="text-center text-sm text-gray-500">
+        <p className="text-center text-base text-gray-500">
           You will not be asked for personal details.
         </p>
       </section>

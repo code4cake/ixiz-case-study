@@ -10,18 +10,16 @@ export default {
           "progress-pulse":
             "progress-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         },
-        // keyframes: {
-        //   "progress-pulse": {
-        //     "0%, 100%": { opacity: 1 },
-        //     "50%": { opacity: 0.5 },
-        //   },
-        // },
+        colors: {
+          primary: 'var(--primary-color)',
+          secondary: 'var(--secondary-color)',
+          'text-primary': 'var(--text-primary)',
+          'text-secondary': 'var(--text-secondary)',
+          'status-success': 'var(--status-success)',
+          'status-warning': 'var(--status-warning)',
+          'status-disable': 'var(--status-disable)',
+        },
       },
     },
-    // plugins: [
-    //   require("tailwindcss-animate"),
-    //   require("tailwind-scrollbar"),
-    //   require("@tailwindcss/typography"),
-    // ],
   };
   

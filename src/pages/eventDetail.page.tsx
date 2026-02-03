@@ -1,30 +1,24 @@
-import { Progress } from "../components/progressBar";
+import { ProgressBar } from "../components/progressBar.tsx";
 import { Button } from "../components/button";
+import { Icon } from "../components/icon";
+
 import { useGetEvent } from "../queries/events.queries";
 
-type Props = {
+import { formatTitle } from "../utils/formatTitle.utils";
+import { Loader } from "../components/loader.tsx";
+
+type EventDetailProps = {
   eventId: string;
   onBack: () => void;
   onShareLink: (eventId: string, token: string) => void;
 };
 
-// Helper to split title
-function formatTitle(title: string) {
-  const words = title.split(" ");
-  if (words.length <= 1) return { first: title, rest: "" };
-  return { first: words[0], rest: words.slice(1).join(" ") };
-}
-
-export default function EventDetail({ eventId, onBack, onShareLink }: Props) {
+export default function EventDetail({ eventId, onBack, onShareLink }: EventDetailProps) {
   const { data: event, isLoading, isError, error } = useGetEvent(eventId);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white px-5 pb-10 pt-8">
-        <div className="rounded-lg border border-gray-200 bg-white p-4 text-gray-600">
-          Loading event…
-        </div>
-      </div>
+      <Loader text="Loading event…" />
     );
   }
 
@@ -41,18 +35,7 @@ export default function EventDetail({ eventId, onBack, onShareLink }: Props) {
             onClick={onBack}
             className="inline-flex items-center gap-2 text-gray-700 underline"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
+            <Icon name="arrowBack" />
             Go back
           </button>
         </div>
@@ -66,38 +49,32 @@ export default function EventDetail({ eventId, onBack, onShareLink }: Props) {
   return (
     <div className="min-h-screen bg-white px-5 pb-10 pt-8">
       <header>
-        <h1 className="text-4xl font-semibold tracking-tight text-gray-900">
-          {first}
-          {rest && (
-            <>
-              <br />
-              <span className="ml-4">{rest}</span>
-            </>
-          )}
+        <h1 className=" text-4xl font-semibold tracking-normal leading-text-gray-900 ">
+          {first + rest}
         </h1>
 
         <div className="mt-4 flex items-center gap-3">
-          <span className="rounded-md border border-gray-300 bg-gray-100 px-2.5 py-1 text-sm font-medium text-gray-700">
+          <span className=" text-text-primary rounded-md border border-gray-300 bg-gray-100 px-2.5 py-1 text-base font-medium text-text">
             {event.capacityReserved} / {event.capacityTotal} reserved
           </span>
 
           <div className="flex-1">
-            <Progress value={event.capacityReserved} max={event.capacityTotal} />
+            <ProgressBar value={event.capacityReserved} max={event.capacityTotal} />
           </div>
         </div>
 
-        <p className="mt-3 text-base text-gray-600">
-          Manage guest parking for upcoming events
+        <p className="my-3 text-lg text-gray-600">
+          Manage guest parking for upcoming events.
         </p>
       </header>
 
-      <section className="mt-10 space-y-6">
-        <div className="text-sm leading-6 text-gray-600">
+      <section className="grid mt-5 gap">
+        <div className="text-base  text-gray-600 ">
           <div>{dateTime}</div>
           <div className="mt-1">{event.address}</div>
         </div>
 
-        <p className="whitespace-pre-line text-base leading-7 text-gray-700">
+        <p className="whitespace-pre-line text-base leading-7 text-text-primary mt-5">
           {event.description}
         </p>
       </section>
@@ -105,44 +82,21 @@ export default function EventDetail({ eventId, onBack, onShareLink }: Props) {
       <section className="mt-10">
         <Button onClick={() => onShareLink(event.id, event.guestTokenShareLink)}>
           <span className="inline-flex items-center gap-2">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
+            <Icon name="share" />
             Share guest link
           </span>
         </Button>
 
-        <p className="mt-2 text-center text-sm text-gray-500">
+        <p className="mt-2 text-center text-sm text-gray-600">
           Guests can use this link to reserve a parking spot.
         </p>
 
         <div className="mt-8 flex justify-center">
           <button
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-gray-700 underline"
+            className="inline-flex items-center gap-2 text-text-primary underline"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
+            <Icon name="arrowBack" />
             Go back
           </button>
         </div>

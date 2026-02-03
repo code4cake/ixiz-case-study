@@ -2,6 +2,19 @@
 
 @import "tailwindcss";
 
+html {
+  font-size: 18px;
+  line-height: 1.5;
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-optical-sizing: auto;
+  font-feature-settings: "liga" off, "clig" off;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 :root {
   --primary-color: #2563EB;
   --secondary-color: #14B8A6;
