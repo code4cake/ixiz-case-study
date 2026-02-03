@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo } from 'react';
 
 interface GuestLinkResult {
   isGuestMode: boolean;
@@ -9,12 +9,12 @@ interface GuestLinkResult {
 export function useGuestLinkParams(): GuestLinkResult {
   return useMemo(() => {
     const params = new URLSearchParams(window.location.search);
-    const mode = params.get("mode");
-    const eventId = params.get("eventId");
-    const token = params.get("token") ?? undefined;
+    const mode = params.get('mode');
+    const eventId = params.get('eventId');
+    const token = params.get('token') ?? undefined;
 
     return {
-      isGuestMode: mode === "guest",
+      isGuestMode: mode === 'guest',
       eventId,
       token,
     };

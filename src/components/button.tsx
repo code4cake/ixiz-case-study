@@ -12,9 +12,9 @@ export function Button({
       onClick={onClick}
       disabled={disabled}
       className={[
-        "w-full rounded-md px-4 py-3 text-center text-base font-semibold",
-        disabled ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "bg-blue-600 text-white hover:bg-blue-700",
-      ].join(" ")}
+        'w-full rounded-md px-4 py-3 text-center text-base font-semibold',
+        disabled ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700',
+      ].join(' ')}
     >
       {children}
     </button>

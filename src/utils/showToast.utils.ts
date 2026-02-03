@@ -1,4 +1,4 @@
-import { toast, type ToastOptions, type ToastType } from "react-hot-toast";
+import { toast, type ToastOptions, type ToastType } from 'react-hot-toast';
 
 interface ShowToastProps {
   type: ToastType;
@@ -8,16 +8,16 @@ interface ShowToastProps {
 
 export function showToast({ message, options, type }: ShowToastProps) {
   switch (type) {
-    case "success":
+    case 'success':
       toast.success(message, { ...options });
       break;
-    case "error":
+    case 'error':
       toast.error(message, { ...options });
       break;
-    case "loading":
+    case 'loading':
       toast.loading(message, { ...options });
       break;
-    case "custom":
+    case 'custom':
       toast.custom(message, { ...options });
       break;
   }

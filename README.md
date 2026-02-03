@@ -1,73 +1,52 @@
-# React + TypeScript + Vite
+# Ixiz Case Study: Event Parking Reservation System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application for managing guest parking reservations for events. This application allows event organizers to manage parking spots and share guest links for attendees to reserve their parking spaces.
 
-Currently, two official plugins are available:
+## 🎯 Project Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This is a case study project that demonstrates a parking reservation system with two main user flows:
 
-## React Compiler
+- **Admin Flow**: Event organizers can view a list of events, see reservation status, and share guest links
+- **Guest Flow**: Attendees can reserve parking spots through shared links without providing personal details
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🔗 Figma Design
+[Link to Figma Design File](https://www.figma.com/design/pZmvu0t4uIsZyRKRGUqaHC/Izix-test-technique?node-id=0-1&t=H3CJIRf9EMr2qqnc-1)
 
-## Expanding the ESLint configuration
+## 📋 Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js (v22.16 or higher)
+- pnpm (or npm/yarn)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Main Pgks
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- `react`
+- `typescript`
+- `vitejs`
+- `react-query`
+- `react-hot-toast`
+- `react-icons`
+- `@tanstack/react-query`
+- `tailwindcss`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Project Structure
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- `src/`
+  - `api/`
+  - `components/`
+  - `pages/`
+  - `queries/`
+  - `utils/`
+  - `hooks/`
+  - `types/`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Development
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `pnpm install`
+- `pnpm run dev`
+
+## Other Commands
+
+- `pnpm run preview`
+- `pnpm run lint`
+- `pnpm run format`
+- `pnpm run test`
